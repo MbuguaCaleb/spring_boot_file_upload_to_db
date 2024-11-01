@@ -24,7 +24,7 @@ public class ImageDataEntity {
 
     //When we want to store any binary formats in our DB
     @Lob
-    @Column(name = "imagedata",length = 1000)
+    @Column(name = "imagedata", columnDefinition = "LONGBLOB")
     private byte[] imageData;
 
 
