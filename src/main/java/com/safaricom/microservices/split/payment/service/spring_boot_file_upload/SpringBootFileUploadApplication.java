@@ -27,15 +27,30 @@ public class SpringBootFileUploadApplication {
     //I WILL GET MY MULTIPART IMAGE FROM A PARAM CALLED IMAGE
     @PostMapping("/upload")
     public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
-        String uploadImage = storageService.uploadImage(file);
+        String uploadImage = storageService.uploadImageToDataBase(file);
         return ResponseEntity.status(HttpStatus.OK).body(uploadImage);
     }
 
     @GetMapping("/{fileName}")
     public ResponseEntity<byte[]> downloadImage(@PathVariable String fileName){
-        var downloadImage = storageService.downloadImage(fileName);
+        var downloadImage = storageService.downloadImageFromDataBase(fileName);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("image/png"))
                 .body(downloadImage);
     }
+
+    @PostMapping("/fileSystem")
+    public ResponseEntity<String> uploadImageToFileSystem(@RequestParam("image") MultipartFile file) throws IOException {
+        String uploadImage = storageService.uploadImageToFileSystem(file);
+        return ResponseEntity.status(HttpStatus.OK).body(uploadImage);
+    }
+
+    @GetMapping("/fileSystem/{fileName}")
+    public ResponseEntity<byte[]> downloadImageToFileSystem(@PathVariable String fileName) throws IOException {
+        var downloadImage = storageService.downloadImageFromFileSystem(fileName);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(downloadImage);
+    }
+
 }
